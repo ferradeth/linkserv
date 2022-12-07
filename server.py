@@ -94,15 +94,24 @@ def add_link():
     user_id = database.session.execute(database.select(Users.id).filter_by(login=user_token)).first()[0]
 
     if request.json['nickname'] is None:
-        short_link = hashlib.md5(long_link.encode()).hexdigest()[:random.randint(8, 12)]
-        database.session.add(Links(fullName=long_link, shortName=short_link, access=lvl_access, userId=user_id))
-        database.session.commit()
-        return make_response(f'Ссылка сокращена и доступна для перехода по сокращению {short_link}')
+        if Users.query.filter_by(user_id=user_id, fullName=long_link).all() is None:
+            short_link = hashlib.md5(long_link.encode()).hexdigest()[:random.randint(8, 12)]
+            database.session.add(Links(fullName=long_link, shortName=short_link, access=lvl_access, userId=user_id))
+            database.session.commit()
+            return make_response(f'Ссылка сокращена и доступна для перехода по сокращению {short_link}')
+        else:
+            return make_response("Такая ссылка уже существует в базе")
 
     else:
-        database.session.add(Links(fullName=long_link, shortName=nickname, access=lvl_access, userId=user_id))
-        database.session.commit()
-        return make_response('Ссылка сокращена и доступна для перехода по вашему сокращению')
+        if Users.query.filter_by(shortName=nickname).all() is None:
+            if Users.query.filter_by(user_id=user_id, fullName=long_link).all() is None:
+                database.session.add(Links(fullName=long_link, shortName=nickname, access=lvl_access, userId=user_id))
+                database.session.commit()
+                return make_response('Ссылка сокращена и доступна для перехода по вашему сокращению')
+            else:
+                return make_response("Такая ссылка уже существует в базе")
+        else:
+            return make_response("Такое название для ссылки недоступно, выберите другое")
 
 
 #сокращение ссылки без авторизации
