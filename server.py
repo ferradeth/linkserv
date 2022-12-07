@@ -45,6 +45,7 @@ class Links(database.Model):
     countLink = database.Column(database.Integer)
 
 
+#регистрация
 @app.route("/reg", methods=["POST"])
 def reg():
     username = request.json['login']
@@ -64,6 +65,7 @@ def reg():
     return make_response('Такой пользователь уже существует')
 
 
+#авторизация
 @app.route("/auth", methods=["POST"])
 def login():
     username = request.json['login']
@@ -81,6 +83,7 @@ def login():
         return make_response('Отсутсвует пользователь')
 
 
+#добавление ссылки в базу
 @app.route("/add-link", methods=["POST"])
 @jwt_required()
 def add_link():
@@ -102,6 +105,7 @@ def add_link():
         return make_response('Ссылка сокращена и доступна для перехода по вашему сокращению')
 
 
+#сокращение ссылки без авторизации
 @app.route("/get_short", methods=["POST"])
 def hash_link():
     long_link = request.json['link']
@@ -109,6 +113,7 @@ def hash_link():
     return make_response(f'Ваша сокращённая ссылка: {short_link}')
 
 
+#редактирование ссылки
 @app.route("/edit_link", methods=["POST"])
 @jwt_required()
 def edit_link():
@@ -128,6 +133,7 @@ def edit_link():
         return make_response(f"Ваша ссылка {long_link} успешно обновлена")
 
 
+#получение ссылок пользователя
 @app.route("/my_links", methods=["POST"])
 @jwt_required()
 def get_links():
@@ -136,31 +142,44 @@ def get_links():
     return jsonify(links)
 
 
+#переход по ссылке
 @app.route("/<short>", methods=["POST"])
+@jwt_required(optional=True)
 def go_to_link(short):
-    # ПЕРЕСОЗДАТЬ БАЗУ ПОТОМУ ЧТО Я ПЕРЕИМЕНОВАЛА КОЛОНКУ
     search_link = database.session.execute(
         database.select(Links.fullName, Links.access, Links.countLink).filter_by(shortName=short)).first()
     print(search_link)
     if search_link[1] == 1:
-        # if search_link[2] is None:
-        #     count = 1
-        # else:
-        #     print(search_link[2])
-        #     count = search_link[2] + 1
-        # Links.query.filter_by(fullName=search_link[0]).update(countLink=count)
-
+        if search_link[2] is None:
+            count = 1
+        else:
+            count = search_link[2] + 1
+        Links.query.filter_by(fullName=search_link[0]).update({"countLink": count})
+        database.session.commit()
         return redirect(search_link[0])
     elif search_link[1] == 2:
         if get_jwt_identity() is not None:
-            # if search_link[2] is None:
-            #     count = 1
-            # else:
-            #     count = search_link[2] + 1
-            # Users.query.filter_by(fullName=search_link[0]).update(count=count)
+            if search_link[2] is None:
+                count = 1
+            else:
+                count = search_link[2] + 1
+            Links.query.filter_by(fullName=search_link[0]).update({"countLink": count})
+            database.session.commit()
             return redirect(search_link[0])
         else:
             return make_response("Эта ссылка с ограниченным доступом, необходимо авторизоваться")
+
+
+#удаление ссылки
+@app.route("/delete", methods=["POST"])
+@jwt_required()
+def delete_link():
+    long_link = request.json['link']
+    user_id = database.session.execute(database.select(Users.id).filter_by(login=get_jwt_identity())).first()[0]
+
+    Links.query.filter_by(userId=user_id, fullName=long_link).delete()
+    database.session.commit()
+    return make_response(f"Ваша ссылка {long_link} успешно удалена")
 
 
 if __name__ == "__main__":
