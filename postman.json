@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "5f7be431-ca8c-4fb3-83ec-f3256bb34086",
+		"name": "linkserv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "получение ссылки без регистрации",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"link\": \"https://www.youtube.com/watch?v=G-si1WbtNeM&list=RDCMUCvuY904el7JvBlPbdqbfguw&index=2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/get_short",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"get_short"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "регистрация",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"user2\",\r\n    \"password\":\"pass2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reg",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "авторизация",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"user2\",\r\n    \"password\":\"pass2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/auth",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получение ссылки при авторизации",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3MDM0NTYyNywianRpIjoiM2NmNDI0ZjQtMzMyZS00OWVhLTg3MmItZDRjZTg1M2JjMTUyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InVzZXIyIiwibmJmIjoxNjcwMzQ1NjI3LCJleHAiOjE2NzAzNDY1Mjd9.EbT6oao-s351sty--lzIv9CNnOmBncUU6H13Sokdhqo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"link\": \"https://vk.com/lanzhanzanuda\",\r\n    \"nickname\": \"me\",\r\n    \"access\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/add-link",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"add-link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получение списка ссылок",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2OTgxNzk2NCwianRpIjoiMWNiYjA0YzgtYjI4Yi00MGNmLTk4MjktZTU5YmM5MDNiODYwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InVzZXIyIiwibmJmIjoxNjY5ODE3OTY0LCJleHAiOjE2Njk4MTg4NjR9.NY_5MYRWxMhQqwmNZIBX7qAGtL0fSK5ztzFUvZ2AOSY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/my_links",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"my_links"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "переход по ссылке без авторизации",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/me",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "переход по ссылке c авторизацией",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3MDM4NTAzOCwianRpIjoiZjk1ZWYxODAtNGIxZS00NjQ1LWFlNmItYmI0ZTk2MGIxMWIwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InVzZXIyIiwibmJmIjoxNjcwMzg1MDM4LCJleHAiOjE2NzAzODU5Mzh9.KDU2h3ujUe-3RgPtEqRqiaxSFoyDWpKZHwKPlmmH5pQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/news",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"news"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "редактирование ссылки",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2OTgxOTE0MCwianRpIjoiMTQyYmRmMGYtY2RkZS00YjczLTkwMjctMDAzOTJkZmFjMGYxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InVzZXIyIiwibmJmIjoxNjY5ODE5MTQwLCJleHAiOjE2Njk4MjAwNDB9.TIm92j0Aj0Kp1-pGnSUuX4PJM3j-8FgF2PqEJwJpXlo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"link\": \"https://www.youtube.com/watch?v=tIKvADYKLjA\",\r\n    \"nick\": \"max fasfood\",\r\n    \"access\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/edit_link",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"edit_link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "удаление ссылки",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3MDM0NTUxNSwianRpIjoiNGEzYTViNzgtMTRiNS00N2YwLTk3ZDktZmVjYzViN2Y4ZTA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InVzZXIyIiwibmJmIjoxNjcwMzQ1NTE1LCJleHAiOjE2NzAzNDY0MTV9.TVfmMbtyLSC7vTwLaxZpIWunzIVAC8GPT7NUqnav894",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"link\": \"https://vk.com/feed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/delete",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
